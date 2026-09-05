@@ -1,0 +1,7 @@
+{
+  "name": "media-listing-aggregator",
+  "private": true,
+  "type": "module",
+  "scripts": {"start": "node --experimental-strip-types src/media_delivery.ts", "test": "node --experimental-strip-types --test src/media_delivery.test.ts"},
+  "dependencies": {"openai": "^4.104.0"}
+}
