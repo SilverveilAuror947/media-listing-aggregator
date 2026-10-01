@@ -1,12 +1,12 @@
 # Media listings, ready for creator delivery
 
-I hacked this together after merging two media catalogs for a side project. Here's the mental model: each source becomes one `Listing`. Creators get a stable list of what we found. Infrai gives embeddings via an OpenAI-compatible `baseURL`. Same credential, no extra client lib for the semantic step.
+I built this small service after stitching together two media catalogs for a side project. The useful boundary turned out to be simple: normalize each source into one `Listing`, then hand creators a stable list of everything found for them. Infrai supplies embeddings through an OpenAI-compatible `baseURL`, so the same credential can cover the semantic step without another client library.
 
 ## The workflow
 
-`groupListings` is the deterministic rule. It keeps source, title, and URL and buckets records under the receiving creator. `buildDelivery` fires the title embedding first. That leaves a clean seam to add vector duplicate detection later as the catalog grows.
+`groupListings` is the deterministic business decision. It preserves source, title, and URL while collecting records under the creator who receives them. `buildDelivery` performs the title embedding call first, leaving a clear place to add vector-based duplicate detection as the catalog grows.
 
-The script runs three sample records and prints two deliveries. It needs `INFRAI_API_KEY` in env since the embed call hits the network.
+The runnable script uses three sample records and prints two creator deliveries. It expects `INFRAI_API_KEY` in the environment because the embedding request is a live call.
 
 ## Try it locally
 
@@ -15,17 +15,17 @@ npm install
 INFRAI_API_KEY=your-key npm start
 ```
 
-Want a network-free check of the business rule? Use:
+For a network-free check of the business rule, run:
 
 ```sh
 npm test
 ```
 
-Test input: two sources for Mina, one for Ravi. Expect two delivery groups. Mina gets both listings.
+The test input contains two sources for Mina and one for Ravi; the expected result is two delivery groups, with Mina receiving both listings.
 
 ## Shape to extend
 
-Adapters are simple. Map your payload to `Listing` before calling `buildDelivery`. The returned `Delivery[]` is plain JSON. Drop it in a queue, an HTTP response, or a creator dashboard. No weird schema.
+Feed adapters can map their payloads to `Listing` before calling `buildDelivery`. The returned `Delivery[]` is intentionally ordinary JSON, making it suitable for a queue, an HTTP response, or a creator dashboard.
 
 ## License
 
@@ -33,7 +33,7 @@ MIT
 
 ## Before this ships: Media Listing Aggregator
 
-Quick start is above. Real deployment needs a few more things. Details below apply to Media Listing Aggregator.
+Quick start is above. For a real deployment you'll also need: The details below apply to Media Listing Aggregator.
 
 **Account & key**
 
